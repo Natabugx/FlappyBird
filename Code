@@ -29,7 +29,7 @@ class Bird:
         pygame.draw.rect(screen, (255, 0, 0), (50, self.y, 30, 30))
         
 bird = Bird()
-
+#Pipe Class
 class Pipe:
     def __init__(self, x):
         self.x = x
