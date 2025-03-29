@@ -34,22 +34,21 @@ class Pipe:
     def __init__(self, x):
         self.x = x
         self.height = random.randint(50, 400)
-        self.gap = 150 #Gap size between top and bottom pipes
+        self.gap = 150  # Gap size between top and bottom pipes
         self.top_pipe = pygame.transform.flip(pipe_image, False, True)
         self.bottom_pipe = pipe_image
-        
-        
+
     def move(self):
-        self.x -= 2 #Move pipes to the left
-        
+        self.x -= 2  # Move pipes to the left
+
     def draw(self):
-        #Calculate the top and bottom positions
+        # Calculate the top and bottom positions
         top_height = self.height
         bottom_height = 800 - (self.height + self.gap)
-        
-        #Draw the top pipe
+
+        # Draw the top pipe
         screen.blit(self.top_pipe, (self.x, top_height - self.top_pipe.get_height()))
-        #Draw the bottom pipe
+        # Draw the bottom pipe
         screen.blit(self.bottom_pipe, (self.x, self.height + self.gap))
 
 pipes = []
