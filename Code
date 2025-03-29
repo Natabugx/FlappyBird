@@ -94,7 +94,6 @@ while running: #Game loop ======================================================
     while i >= 0:
         if pipes[i].x <= -50:
             pipes.pop(i)
-        i -=1
             
     bird.physics()
    # Render section ------------------------------------------
@@ -114,6 +113,6 @@ while running: #Game loop ======================================================
     
 text = font2.render("GAME OVER", True, (255, 50,50))
 screen.blit(text, (200, 200)) #position the score in the top-right
-pygame.dispay.flip()
+pygame.display.flip() 
 pygame.time.delay(2000) #Delay in milliseconds
 pygame.quit()
