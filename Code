@@ -33,7 +33,7 @@ bird = Bird()
 class Pipe:
     def __init__(self, x):
         self.x = x
-        self.hight = random.randint(50, 400)
+        self.height = random.randint(50, 400)
         self.gap = 150 #Gap size between top and bottom pipes
         
     def move(self):
@@ -41,13 +41,21 @@ class Pipe:
         
     def draw(self):
         #Draw the top pipe
-        pygame.draw.rect(screen, (0, 255, 0), (self.x, 0, 50, self.hight))
+        pygame.draw.rect(screen, (0, 255, 0), (self.x, 0, 50, self.height))
         #Draw the bottom pipe
-        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.hight + self. gap, 50, 600 - (self.hight + self.gap)))
+        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.height + self.gap, 50, 600 - (self.height + self.gap)))
         
 pipes = []
 spawn_pipe = 0 #timer for pipe spawn
 
+def check_collision(bx, by, px, py):
+    #TOP PIPE CHECK
+    if bx + 30 > px and bx < px + 50 and by < py:
+        return True
+    #BOTTOM PIPE CHECK
+    if bx + 30 > px and bx < px + 50 and by + 30 > py + 150:
+        return True
+    return False
 
 while running: #Game loop ===========================================================
     clock.tick(60)
@@ -60,20 +68,30 @@ while running: #Game loop ======================================================
             
             
    #spawn pipes
-   spawn_pipe += 1 #increment timer
-   if spawn_pipe >= 150: #pipe is spawned every 150 frames
-       pipes.apend(Pipe(800))#this INSTIGATES a new pipe and puts it in the list!
+    spawn_pipe += 1 #increment timer
+    if spawn_pipe >= 150: #pipe is spawned every 150 frames
+       pipes.append(Pipe(800))#this INSTIGATES a new pipe and puts it in the list!
        spawn_pipe = 0 #reset timer
    
    #Move pipes!
     for pipe in pipes: #walk through list of pipes
         pipe.move() #Move each pipe
-        if check_collision(50, bird.y, pipe.x, pipe.hight): #check collision with brid
+        if check_collision(50, bird.y, pipe.x, pipe.height): #check collision with brid
             running = False #Kill game is you hit a pipe
+            
+    #Destroy pipes that have gone off screen
+    i = len(pipes) - 1
+    while i >= 0:
+        if pipes[i].x <= -50:
+            pipes.pop(i)
+        i -=1
+            
+    bird.physics()
    # Render section ------------------------------------------
     screen.fill((0, 0, 0))
     bird.draw()
-    bird.physics()
+    for pipe in pipes:
+        pipe.draw()
     
     score_text = font.render("Score:", True, (255, 255, 255))
     screen.blit(score_text, (650, 20)) # Position the score in the top-right corner
